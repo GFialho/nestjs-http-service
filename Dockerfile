@@ -1,24 +1,25 @@
-FROM node:18 AS builder
-
-# Create app directory
-WORKDIR /app
-
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-COPY package*.json ./
-COPY prisma ./prisma/
-
-# Install app dependencies
+FROM node:18 as build
+WORKDIR /usr/src/app
+COPY package.json .
+COPY package-lock.json .
 RUN npm install
-
 COPY . .
-
+RUN rm -rf .env
+RUN npx prisma generate
 RUN npm run build
 
-FROM node:18
+FROM node:18-slim
+RUN apt update && apt install libssl-dev dumb-init -y --no-install-recommends
+WORKDIR /usr/src/app
+# Added chown for security
+COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+COPY --chown=node:node --from=build /usr/src/app/.env.local .env.local
+COPY --chown=node:node --from=build /usr/src/app/package.json .
+COPY --chown=node:node --from=build /usr/src/app/package-lock.json .
+RUN npm install --omit=dev
+COPY --chown=node:node --from=build /usr/src/app/node_modules/.prisma/client  ./node_modules/.prisma/client
 
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/dist ./dist
-
+ENV NODE_ENV production
 EXPOSE 3000
-CMD [ "npm", "run", "start:prod" ]
+# This command is better than running npm run
+CMD ["dumb-init", "node", "dist/src/main"]

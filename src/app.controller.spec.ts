@@ -14,9 +14,18 @@ describe('AppController', () => {
     appController = app.get<AppController>(AppController);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+  describe('getInfo', () => {
+    it('should return information from AppService', () => {
+      const result = {
+        info: 'NestJs - Leaderboard API',
+        version: 1,
+      };
+
+      jest
+        .spyOn(appController['appService'], 'getInfo')
+        .mockImplementation(() => result);
+
+      expect(appController.getInfo()).toEqual(result);
     });
   });
 });

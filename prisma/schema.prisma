@@ -30,5 +30,6 @@ model leaderboard {
   created_at   DateTime      @default(now())
 
   @@unique([match_id, user_id], name: "match_id_user_id_idx")
+  @@unique([match_id, position], name: "match_id_position_idx")
 
 }

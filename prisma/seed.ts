@@ -5,11 +5,10 @@ const prisma = new PrismaClient();
 (async () => {
   try {
     // Seed matches
-    await prisma.matches.create({
-      data: {
-        id: 1,
-        title: 'Sample match',
-      },
+    await prisma.matches.upsert({
+      create: { id: 1, title: 'Sample match' },
+      where: { id: 1 },
+      update: {},
     });
 
     // Seed leaderboard
@@ -30,6 +29,7 @@ const prisma = new PrismaClient();
 
     await prisma.leaderboard.createMany({
       data: leaderboardData,
+      skipDuplicates: true,
     });
 
     console.log('Seed completed successfully.');

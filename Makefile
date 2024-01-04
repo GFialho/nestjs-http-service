@@ -7,7 +7,7 @@ build:
 	docker build -t nest-api .
 
 run:
-	docker-compose up
+	docker-compose up -d && npx prisma migrate dev && npx prisma db seed
 
 test:
-	docker-compose -f docker-compose.test.yml up --abort-on-container-exit
+	npm run test

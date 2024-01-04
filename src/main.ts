@@ -32,19 +32,11 @@ async function bootstrap() {
 
   // Enable Swagger
   const config = new DocumentBuilder()
-    .setTitle('Hunters on Chain API')
-    .setDescription('API for Hunters on Chain game')
+    .setTitle('Nestjs API')
+    .setDescription('API for the leaderboard match system')
     .setVersion('1.0')
     .addServer(getServer())
-    .addBearerAuth(
-      {
-        name: 'authorization',
-        type: 'apiKey',
-        in: 'header',
-      },
-      'access-token',
-    )
-    .addTag('Hunters on Chain')
+    .addTag('Nestjs API')
     .build();
   const document = SwaggerModule.createDocument(app, config, {
     ignoreGlobalPrefix: true,
