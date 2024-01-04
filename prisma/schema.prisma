@@ -13,8 +13,8 @@ datasource db {
 model matches {
   id          Int           @id @default(autoincrement())
   title       String
-  updatedAt   DateTime      @updatedAt
-  createdAt   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  created_at   DateTime      @default(now())
   leaderboard leaderboard[]
 }
 
@@ -26,8 +26,8 @@ model leaderboard {
   user_name String
   position  Int
   score     Float
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updated_at   DateTime      @updatedAt
+  created_at   DateTime      @default(now())
 
   @@unique([match_id, user_id], name: "match_id_user_id_idx")
 

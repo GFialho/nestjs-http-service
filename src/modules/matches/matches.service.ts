@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { Prisma, matches } from '@prisma/client';
 import { LeaderboardService } from '../leaderboard/leaderboard.service';
 
