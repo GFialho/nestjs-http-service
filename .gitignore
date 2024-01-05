@@ -3,7 +3,8 @@ dist
 node_modules
 
 # Environment
-# .env
+.env
+.env.local
 
 # Logs
 logs
