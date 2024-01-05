@@ -1,4 +1,4 @@
-# NestJS Leaderboard API
+# NestJS Leaderboard API - Made By Gabriel Fialho
 
 ## Overview
 
