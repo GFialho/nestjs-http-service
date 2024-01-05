@@ -1,60 +1,43 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
 import { Prisma, leaderboard } from '@prisma/client';
+import { LeaderboardRepository } from './leaderboard.repository';
 
 @Injectable()
 export class LeaderboardService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly leaderboardRepository: LeaderboardRepository) {}
 
-  async leaderboard(
-    leaderboardWhereUniqueInput: Prisma.leaderboardWhereUniqueInput,
+  async getLeaderboard(
+    input: Prisma.leaderboardWhereUniqueInput,
   ): Promise<leaderboard | null> {
-    return this.prisma.leaderboard.findUnique({
-      where: leaderboardWhereUniqueInput,
-    });
+    return this.leaderboardRepository.leaderboard(input);
   }
 
-  async leaderboards(params: {
+  async getLeaderboards(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.leaderboardWhereUniqueInput;
     where?: Prisma.leaderboardWhereInput;
     orderBy?: Prisma.leaderboardOrderByWithRelationInput;
   }): Promise<leaderboard[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.leaderboard.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
+    return this.leaderboardRepository.leaderboards(params);
   }
 
   async createLeaderboard(
     data: Prisma.leaderboardCreateInput,
   ): Promise<leaderboard> {
-    return this.prisma.leaderboard.create({
-      data,
-    });
+    return this.leaderboardRepository.create(data);
   }
 
   async updateLeaderboard(params: {
     where: Prisma.leaderboardWhereUniqueInput;
     data: Prisma.leaderboardUpdateInput;
   }): Promise<leaderboard> {
-    const { where, data } = params;
-    return this.prisma.leaderboard.update({
-      data,
-      where,
-    });
+    return this.leaderboardRepository.update(params);
   }
 
   async deleteLeaderboard(
     where: Prisma.leaderboardWhereUniqueInput,
   ): Promise<leaderboard> {
-    return this.prisma.leaderboard.delete({
-      where,
-    });
+    return this.leaderboardRepository.remove(where);
   }
 }
